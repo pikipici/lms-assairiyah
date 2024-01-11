@@ -84,7 +84,7 @@ const Searchbar = () => {
         <span className="hidden xl:inline-flex">Cari Forum...</span>
         <span className="sr-only">Cari Forum</span>
       </Button>
-      <CommandDialog position="top" open={isOpen} onOpenChange={setIsOpen}>
+      <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
         <CommandInput
           placeholder="Cari Forum..."
           value={query}
