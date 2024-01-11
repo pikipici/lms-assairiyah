@@ -1,0 +1,469 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                String         @id @default(cuid())
+  name              String
+  email             String?        @unique
+  password          String?
+  emailVerified     DateTime?
+  createdSubreddits Subreddit[]    @relation("CreatedBy")
+  subscriptions     Subscription[]
+  courses           Course[]       @relation("CreatedBy")
+  votes             Vote[]
+
+  username String? @unique
+
+  placeOfBirth String?
+  birth        DateTime? @db.Date
+  religion     Religion?
+  address      String?
+  nuptk        String?
+  nip          String?
+  noInduk      String?
+  nis          String?
+  nisn         String?
+  noKtp        String?
+  savedPosts   Post[]    @relation(name: "savedposts")
+
+  kelasId String?
+  kelas   Kelas?  @relation(fields: [kelasId], references: [id])
+
+  tingkatId String?
+  tingkat   Tingkat? @relation(fields: [tingkatId], references: [id])
+
+  image              String
+  pollVote           PollVote[]
+  poll               Poll[]
+  connectionMapel    ConnectionMapelUser[]
+  accounts           Account[]
+  sessions           Session[]
+  Post               Post[]
+  Announcement       Announcement[]
+  attachments        StudentAttachment[]
+  Comment            Comment[]
+  CommentVote        CommentVote[]
+  finishedLearning   FinishedLearning[]
+  currentlyLearning  CurrentlyLearning[]
+  notStartedLearning NotStartedLearning[]
+  role               Role                  @default(STUDENT)
+}
+
+model ConnectionMapelUser {
+  mapelId String
+  userId  String
+
+  mapel Mapel @relation(fields: [mapelId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, mapelId])
+  @@index([mapelId, userId])
+}
+
+model Subreddit {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  description String?  @db.VarChar(300)
+  imageUrl    String?  @db.Text
+  bgImg       String?  @db.Text
+  posts       Post[]
+
+  category String?
+
+  creatorId   String
+  Creator     User           @relation("CreatedBy", fields: [creatorId], references: [id], onDelete: Cascade)
+  subscribers Subscription[]
+
+  @@index([name])
+  @@index([creatorId])
+}
+
+model Subscription {
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  subreddit   Subreddit @relation(fields: [subredditId], references: [id], onDelete: Cascade)
+  subredditId String
+
+  @@id([userId, subredditId])
+  @@index([subredditId, userId])
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  title       String
+  content     Json?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  subreddit   Subreddit @relation(fields: [subredditId], references: [id], onDelete: Cascade)
+  subredditId String
+
+  savedby User[] @relation(name: "savedposts")
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  comments Comment[]
+  votes    Vote[]
+
+  @@index([subredditId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  text      String
+  createdAt DateTime @default(now())
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String
+
+  replyToId String?
+  replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[] @relation("ReplyTo")
+
+  votes     CommentVote[]
+  commentId String?
+}
+
+enum Role {
+  ADMIN
+  TEACHER
+  STUDENT
+}
+
+enum VoteType {
+  UP
+  DOWN
+}
+
+model Vote {
+  user   User     @relation(fields: [userId], references: [id])
+  userId String
+  post   Post     @relation(fields: [postId], references: [id])
+  postId String
+  type   VoteType
+
+  @@id([userId, postId])
+}
+
+model CommentVote {
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  comment   Comment  @relation(fields: [commentId], references: [id])
+  commentId String
+  type      VoteType
+
+  @@id([userId, commentId])
+}
+
+model Kelas {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  User      User[]
+  courses   Course[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Tingkat {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  User      User[]
+  courses   Course[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Course {
+  id          String  @id @default(cuid())
+  userId      String
+  name        String  @unique
+  title       String  @db.Text
+  description String? @db.Text
+  imageUrl    String  @db.Text
+  isPublished Boolean @default(false)
+
+  mapelId String?
+  mapel   Mapel?  @relation(fields: [mapelId], references: [id])
+
+  kelasId String?
+  kelas   Kelas?  @relation(fields: [kelasId], references: [id])
+
+  tingkatId String?
+  tingkat   Tingkat? @relation(fields: [tingkatId], references: [id])
+
+  creatorId String?
+  Creator   User?   @relation("CreatedBy", fields: [creatorId], references: [id], onDelete: Cascade)
+
+  chapters    Chapter[]
+  attachments Attachment[]
+  learning    Learning[]
+
+  finishedLearning   FinishedLearning[]
+  currentlyLearning  CurrentlyLearning[]
+  notStartedLearning NotStartedLearning[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tingkatId])
+  @@index([kelasId])
+  @@index([mapelId])
+  @@index([creatorId])
+}
+
+model Mapel {
+  id              String                @id @default(cuid())
+  name            String                @unique
+  courses         Course[]
+  connectionMapel ConnectionMapelUser[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Attachment {
+  id       String  @id @default(cuid())
+  name     String
+  FileName String?
+  url      String  @db.Text
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([courseId])
+}
+
+model StudentAttachment {
+  id   String @id @default(cuid())
+  name String
+  url  String @db.Text
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Chapter {
+  id          String  @id @default(cuid())
+  title       String
+  description String? @db.Text
+  videoUrl    String? @db.Text
+  position    Int
+  isPublished Boolean @default(false)
+
+  muxData MuxData?
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  userProgress UserProgress[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([courseId])
+}
+
+model MuxData {
+  id         String  @id @default(cuid())
+  assetId    String
+  playbackId String?
+
+  chapterId String  @unique
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+}
+
+model UserProgress {
+  id     String @id @default(cuid())
+  userId String
+
+  chapterId String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  isCompleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, chapterId])
+  @@index([chapterId])
+}
+
+model Learning {
+  id     String @id @default(cuid())
+  userId String
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, courseId])
+  @@unique([courseId])
+}
+
+model Events {
+  id          String   @id @default(cuid())
+  title       String
+  description String?  @db.Text
+  start       DateTime
+  end         DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Poll {
+  id String @id @default(cuid())
+
+  question String @db.VarChar(150)
+
+  creatorId String
+  creator   User   @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+
+  option PollOption[]
+
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model PollOption {
+  id String @id @default(cuid())
+
+  option String @db.VarChar(80)
+
+  pollId String
+  poll   Poll   @relation(fields: [pollId], references: [id], onDelete: Cascade)
+
+  vote PollVote[]
+
+  createdAt DateTime @default(now())
+}
+
+model PollVote {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  pollOptionId String
+  pollOption   PollOption @relation(fields: [pollOptionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model FinishedLearning {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId])
+  @@unique([courseId])
+}
+
+model CurrentlyLearning {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId])
+  @@unique([courseId])
+}
+
+model NotStartedLearning {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId])
+  @@unique([courseId])
+}
+
+model Announcement {
+  id        Int      @id @default(autoincrement())
+  desc      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+enum Religion {
+  ISLAM
+  KRISTEN
+  KATHOLIK
+  HINDU
+  BUDHA
+  KONGHUCU
+}
