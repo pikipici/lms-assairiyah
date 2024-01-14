@@ -1,4 +1,4 @@
-import Signin from "@/components/ui/Custom-UI/SigninForm";
+import Signin from "@/components/ui/Custom-UI/sign-in-form";
 import Image from "next/image";
 
 const Page = () => {
