@@ -24,7 +24,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, initialData }) => {
   const roleMenu =
     initialData?.role === "ADMIN" ? (
       <DropdownMenuItem asChild>
-        <Link href={`/admin/${user?.id}`}>
+        <Link href={`/admin`}>
           <div className="flex items-center gap-x-2">
             <Icons.admin className="h-4 w-4" />
             Menu Admin
@@ -33,7 +33,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, initialData }) => {
       </DropdownMenuItem>
     ) : initialData?.role === "TEACHER" ? (
       <DropdownMenuItem asChild>
-        <Link href={`/teachers/${user?.id}`}>
+        <Link href={`/teacher`}>
           <div className="flex items-center gap-x-2">
             <Icons.guru className="h-4 w-4" />
             Menu Pendidik

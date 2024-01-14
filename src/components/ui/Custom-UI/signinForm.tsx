@@ -21,7 +21,7 @@ import { redirect } from "next/navigation";
 
 type FormType = "signin" | "signup";
 
-const SiginForm = ({ formType }: { formType: FormType }) => {
+const Signin = ({ formType }: { formType: FormType }) => {
   const [userInput, setUserInput] = useState({
     username: "",
     password: "",
@@ -126,4 +126,4 @@ const SiginForm = ({ formType }: { formType: FormType }) => {
     </div>
   );
 };
-export default SiginForm;
+export default Signin;

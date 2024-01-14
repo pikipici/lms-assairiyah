@@ -1,4 +1,4 @@
-import SiginForm from "@/components/ui/Custom-UI/signinForm";
+import Signin from "@/components/ui/Custom-UI/SigninForm";
 import Image from "next/image";
 
 const Page = () => {
@@ -14,7 +14,7 @@ const Page = () => {
         />
         {/* <h1 className="-mt-8 text-3xl font-bold md:-mt-14">Login Page</h1> */}
       </div>
-      <SiginForm formType="signin" />
+      <Signin formType="signin" />
     </main>
   );
 };

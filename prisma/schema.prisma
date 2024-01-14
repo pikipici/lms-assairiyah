@@ -355,6 +355,7 @@ model Events {
   id          String   @id @default(cuid())
   title       String
   description String?  @db.Text
+  fileUrl     String?  @db.Text
   start       DateTime
   end         DateTime
 
@@ -450,8 +451,10 @@ model NotStartedLearning {
 }
 
 model Announcement {
-  id        Int      @id @default(autoincrement())
-  desc      String
+  id      Int     @id @default(autoincrement())
+  desc    String
+  fileUrl String? @db.Text
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
