@@ -42,7 +42,7 @@ export const metadata = {
   title: "Materi Pembelajaran",
 };
 
-export const CardPage = ({
+const CardPage = ({
   name,
   title,
   description,
@@ -114,3 +114,5 @@ export const CardPage = ({
     </>
   );
 };
+
+export default CardPage;

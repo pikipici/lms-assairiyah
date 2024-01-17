@@ -24,11 +24,6 @@ export default async function ArticleLayout({
     },
   });
 
-  const courses = await getCourses({
-    userId,
-    ...searchParams,
-  });
-
   // const testMenu = searchParams ? (
   //   <>
   //     {" "}
