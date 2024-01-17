@@ -25,6 +25,7 @@ export const CoursesList = ({ items }: CoursesListProps) => {
               mapel={item.mapel!.name}
               tingkat={item.tingkat!.name}
               title={item.title}
+              progress={item.progress}
             />
           ))}
         </AnimatePresence>

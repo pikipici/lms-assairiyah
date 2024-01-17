@@ -29,7 +29,7 @@ import moment from "moment";
 import "moment/locale/id";
 import { getProgress } from "@/app/actions/get-progress";
 import { getDashboardCourses } from "@/app/actions/get-dashboard-courses";
-import { CardPage } from "@/app/(card)/(materi)/listmateri/card-page";
+import CardPage from "@/app/(card)/(materi)/listmateri/card-page";
 
 moment.locale("id");
 // import { generateSEO } from '@/lib/generateSEO'
