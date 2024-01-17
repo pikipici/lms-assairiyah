@@ -6,12 +6,8 @@ import { redirect } from "next/navigation";
 
 export default async function ArticleLayout({
   children,
-  searchParams,
 }: {
   children: React.ReactNode;
-  searchParams: {
-    mapelId: string;
-  };
 }) {
   const session = await getAuthSession();
 
@@ -27,25 +23,6 @@ export default async function ArticleLayout({
     },
   });
 
-  const courses = await getCourses({
-    userId,
-    ...searchParams,
-  });
-
-  // const testMenu = searchParams ? (
-  //   <>
-  //     {" "}
-  //     <CoursesList items={courses} />{" "}
-  //   </>
-  // ) : (
-  //   <>{children}</>
-  // );
-
-  const tingkat = await db.tingkat.findMany({
-    orderBy: {
-      name: "desc",
-    },
-  });
   return (
     <>
       <section className="grid grid-cols-12 overflow-hidden h-full">
