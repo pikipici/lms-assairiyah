@@ -7,12 +7,8 @@ import { CoursesList } from "./course-list";
 
 export default async function ArticleLayout({
   children,
-  searchParams,
 }: {
   children: React.ReactNode;
-  searchParams: {
-    mapelId: string;
-  };
 }) {
   const session = await getAuthSession();
 
