@@ -1,10 +1,11 @@
-import { Mapel, Course } from "@prisma/client";
+import { Mapel, Course, Tingkat } from "@prisma/client";
 
 import { getProgress } from "./get-progress";
 import { db } from "@/lib/db";
 
-type CourseWithProgressWithMapel = Course & {
+export type CourseWithProgressWithMapel = Course & {
   mapel: Mapel | null;
+  tingkat: Tingkat | null;
   chapters: { id: string }[];
   progress: number | null;
 };
@@ -14,39 +15,6 @@ type GetCourses = {
   title?: string;
   mapelId?: string;
 };
-
-// type GetCourseId = {
-//   userId: string;
-//   courseId: string;
-// }
-
-// export const getCoursesId = async ({
-//   userId,
-//   courseId,
-// }: GetCourseId): Promise<CourseWithProgressWithMapel> => {
-//   try {
-//     const courses = await db.course.findUnique({
-//       where: {
-//         id: courseId,
-//       },
-//     });
-
-//     const coursesWithProgress: CourseWithProgressWithMapel =
-//       await Promise.all(
-//         const progressPercentage = await getProgress(userId, course.id);
-
-//           return {
-//             ...course,
-//             progress: progressPercentage,
-//           };
-//       );
-
-//     return coursesWithProgress;
-//   } catch (error) {
-//     console.log("[GET_COURSES]", error);
-//     return [];
-//   }
-// };
 
 export const getCourses = async ({
   userId,
@@ -64,6 +32,7 @@ export const getCourses = async ({
       },
       include: {
         mapel: true,
+        tingkat: true,
         chapters: {
           where: {
             isPublished: true,

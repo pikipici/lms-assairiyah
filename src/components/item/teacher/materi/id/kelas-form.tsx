@@ -30,7 +30,7 @@ interface KelasFormProps {
 }
 
 const formSchema = z.object({
-  kelasId: z.string().min(1),
+  tingkatId: z.string().min(1),
 });
 
 export const KelasForm = ({
@@ -46,7 +46,7 @@ export const KelasForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      kelasId: initialData?.kelasId || "",
+      tingkatId: initialData?.tingkatId || "",
     },
   });
 
@@ -110,7 +110,7 @@ export const KelasForm = ({
   }
 
   const selectedOption = options.find(
-    (option) => option.value === initialData.kelasId
+    (option) => option.value === initialData.tingkatId
   );
 
   return (
@@ -132,7 +132,7 @@ export const KelasForm = ({
         <p
           className={cn(
             "text-sm mt-2",
-            !initialData.kelasId && "text-slate-500 italic"
+            !initialData.tingkatId && "text-slate-500 italic"
           )}
         >
           {selectedOption?.label || "Belum Ditambahkan"}
@@ -146,7 +146,8 @@ export const KelasForm = ({
           >
             <FormField
               control={form.control}
-              name="kelasId"
+              disabled={isLoading}
+              name="tingkatId"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -158,7 +159,7 @@ export const KelasForm = ({
             />
 
             <div className="flex items-center gap-x-2">
-              <Button type="submit" disabled={isSubmitting || !isValid}>
+              <Button type="submit" disabled={isLoading}>
                 Simpan
               </Button>
             </div>

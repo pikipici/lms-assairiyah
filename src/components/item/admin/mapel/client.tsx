@@ -31,7 +31,7 @@ export const MapelClient: React.FC<PostClientProps> = ({ data, adminId }) => {
         <CustomSheetMapel>Tambah</CustomSheetMapel>
       </div>
       <Separator />
-      <DataTable searchKey="title" columns={MapelColumns} data={data} />
+      <DataTable searchKey="name" columns={MapelColumns} data={data} />
     </>
   );
 };

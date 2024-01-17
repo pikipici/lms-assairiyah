@@ -28,18 +28,6 @@ const MenuTeacherPopover: FC<MenuPopover> = ({ className, ...props }) => {
       Icon: Icons.polling,
       href: `/polling`,
     },
-    {
-      id: 3,
-      label: "Forum Anda",
-      Icon: Icons.forum,
-      href: `/teachers/`,
-    },
-    {
-      id: 4,
-      label: "Daftar Siswa",
-      Icon: Icons.anggota,
-      href: `/teachers/`,
-    },
   ];
   return (
     <Command>

@@ -12,7 +12,7 @@ const TeacherSidebar = () => {
   const Items: SidebarNavType[] = [
     {
       id: 1,
-      label: "Data Guru",
+      label: "Informasi Data Web",
       Icon: Icons.laptop,
       href: `/teacher`,
     },
@@ -25,14 +25,14 @@ const TeacherSidebar = () => {
     {
       id: 3,
       label: "Forum Anda",
-      Icon: Icons.forum,
+      Icon: Icons.community,
       href: `/teacher/forum`,
     },
     {
       id: 4,
-      label: "Daftar Siswa",
-      Icon: Icons.anggota,
-      href: `/teacher/studentlist`,
+      label: "Polling Anda",
+      Icon: Icons.polling,
+      href: `/teacher/polling`,
     },
     {
       id: 5,

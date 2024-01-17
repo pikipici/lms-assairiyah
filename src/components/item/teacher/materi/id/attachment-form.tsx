@@ -145,8 +145,8 @@ export const AttachmentForm = ({
                 >
                   <File className="h-4 w-4 mr-2 flex-shrink-0" />
                   <p className="text-xs line-clamp-1">
-                    {attachment.FileName ? (
-                      attachment.FileName
+                    {attachment.name ? (
+                      attachment.name
                     ) : (
                       <p>File belum mempunyai nama</p>
                     )}

@@ -10,6 +10,7 @@ export async function PATCH(
     const session = await getAuthSession();
     const { courseId } = params;
     const values = await req.json();
+    const { title } = values;
     if (!session)
       return new NextResponse("Unauthorized", {
         status: 401,
@@ -33,6 +34,7 @@ export async function PATCH(
         userId: session.user.id,
       },
       data: {
+        name: title,
         ...values,
       },
     });

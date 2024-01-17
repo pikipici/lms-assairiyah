@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
 
-export async function POST(
+export async function PUT(
   req: Request,
   { params }: { params: { courseId: string } }
 ) {
@@ -15,41 +15,30 @@ export async function POST(
       });
 
     const userId = session?.user?.id;
-    const { title } = await req.json();
 
-    const courseOwner = await db.course.findUnique({
+    const { list } = await req.json();
+
+    const ownCourse = await db.course.findUnique({
       where: {
         id: params.courseId,
         userId: userId,
       },
     });
 
-    if (!courseOwner) {
+    if (!ownCourse) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const lastChapter = await db.chapter.findFirst({
-      where: {
-        courseId: params.courseId,
-      },
-      orderBy: {
-        position: "desc",
-      },
-    });
+    for (let item of list) {
+      await db.chapter.update({
+        where: { id: item.id },
+        data: { position: item.position },
+      });
+    }
 
-    const newPosition = lastChapter ? lastChapter.position + 1 : 1;
-
-    const chapter = await db.chapter.create({
-      data: {
-        title,
-        courseId: params.courseId,
-        position: newPosition,
-      },
-    });
-
-    return NextResponse.json(chapter);
+    return new NextResponse("Success", { status: 200 });
   } catch (error) {
-    console.log("[CHAPTERS]", error);
+    console.log("[REORDER]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

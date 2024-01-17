@@ -49,26 +49,18 @@ const MenuStudentPopover: FC<MenuStudentProps> = ({ studentId }) => {
             </Link>
           </CommandItem>
           <CommandItem>
-            <Link href="/myprogress">
+            <Link href="/riwayat">
               <Button type="button" variant="ghost">
                 <Icons.check className="mr-2 h-4 w-4" />
-                <span className="font-bold">My Progress</span>
+                <span className="font-bold">Progress Belajar</span>
               </Button>
             </Link>
           </CommandItem>
           <CommandItem>
-            <Link href={`/students/${studentId}/listmateri`}>
+            <Link href={`/listmateri`}>
               <Button type="button" variant="ghost">
                 <Icons.mapel className="mr-2 h-4 w-4" />
                 <span className="font-bold">Materi Pembelajaran</span>
-              </Button>
-            </Link>
-          </CommandItem>
-          <CommandItem>
-            <Link href="/">
-              <Button type="button" variant="ghost">
-                <Megaphone className="mr-2 h-4 w-4" />
-                <span className="font-bold">Informasi Penting</span>
               </Button>
             </Link>
           </CommandItem>

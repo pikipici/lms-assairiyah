@@ -79,7 +79,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user, initialData }) => {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem>
-          <Link href={`/teachers/${user?.id}`}>
+          <Link href={`/editprofile`}>
             <div className="flex items-center gap-x-2">
               <Icons.profile className="h-4 w-4" />
               Profile

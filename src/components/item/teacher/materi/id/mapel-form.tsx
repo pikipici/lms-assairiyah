@@ -17,7 +17,7 @@ import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { redirect, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Course } from "@prisma/client";
+import { Course, Mapel } from "@prisma/client";
 import { Combobox } from "@/components/ui/Combobox";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
@@ -25,7 +25,6 @@ import { toast } from "@/hooks/use-toast";
 interface MapelFormProps {
   initialData: Course;
   courseId: string;
-  mapelName: string | null;
   options: { label: string; value: string }[];
 }
 
@@ -36,7 +35,6 @@ const formSchema = z.object({
 export const MapelForm = ({
   initialData,
   courseId,
-  mapelName,
   options,
 }: MapelFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -136,7 +134,7 @@ export const MapelForm = ({
             !initialData.mapelId && "text-slate-500 italic"
           )}
         >
-          {mapelName || "Belum Ditambahkan"}
+          {selectedOption ? selectedOption.label : "Belum Ditambahkan"}
         </p>
       )}
       {isEditing && (
@@ -147,6 +145,7 @@ export const MapelForm = ({
           >
             <FormField
               control={form.control}
+              disabled={isLoading}
               name="mapelId"
               render={({ field }) => (
                 <FormItem>
@@ -159,7 +158,7 @@ export const MapelForm = ({
             />
 
             <div className="flex items-center gap-x-2">
-              <Button type="submit" disabled={isSubmitting || !isValid}>
+              <Button type="submit" disabled={isLoading}>
                 Simpan
               </Button>
             </div>

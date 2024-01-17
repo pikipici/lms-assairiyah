@@ -1,12 +1,9 @@
 import { redirect } from "next/navigation";
 
 import { getAuthSession } from "@/lib/auth";
-import { HeaderMenu } from "@/components/item/HeaderMenu";
 import { ShellMenu } from "@/components/item/ShellMenu";
 import { EventColumn } from "@/components/item/admin/Events/Columns";
 import { db } from "@/lib/db";
-import { Suspense } from "react";
-import id from "date-fns/locale/id";
 import moment from "moment";
 import "moment/locale/id";
 import { EventClient } from "@/components/item/admin/Events/Client";

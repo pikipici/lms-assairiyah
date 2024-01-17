@@ -30,7 +30,7 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
         subredditId,
       };
 
-      const { data } = await axios.post("/api/subreddit/subscribe", payload);
+      const { data } = await axios.post("/api/forum/subscribe", payload);
       return data as string;
     },
     onError: (err) => {
@@ -41,8 +41,8 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
       }
 
       return toast({
-        title: "There was a problem",
-        description: "Something went wrong, please try again.",
+        title: "Ada yang salah",
+        description: "gagal, coba lagi nanti.",
         variant: "destructive",
       });
     },
@@ -52,8 +52,8 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
       });
 
       return toast({
-        title: "Subscribed",
-        description: `You are now subscribed to r/${subredditName}`,
+        title: "Mengikuti",
+        description: `Kamu berhasil mengikuti forum ${subredditName}`,
       });
     },
   });
@@ -64,7 +64,7 @@ const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
         subredditId,
       };
 
-      const { data } = await axios.post("/api/subreddit/unsubscribe", payload);
+      const { data } = await axios.post("/api/forum/unsubscribe", payload);
       return data as string;
     },
     onError: (err) => {

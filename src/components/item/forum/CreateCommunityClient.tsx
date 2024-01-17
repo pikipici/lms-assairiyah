@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useCustomToast } from "@/hooks/use-custom-toast";
-import { toast } from "react-hot-toast";
+import { toast } from "@/hooks/use-toast";
 import {
   CreateCommunityValidatorType,
   createCommunityValidator,
@@ -59,29 +59,48 @@ const CreateCommunityClient = () => {
       router.refresh();
       form.reset();
 
-      toast.success("Forum berhasil dibuat");
+      toast({
+        title: "Sukses",
+        description: "Forum berhasil dibuat",
+      });
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
         const statusCode = error.response?.status;
         if (statusCode === 401) {
+          toast({
+            title: "Gagal!",
+            description: "Kamu belum login!",
+          });
           return loginToast();
         }
         if (statusCode === 403) {
-          return toast.error("Kategori Kosong!");
+          return toast({
+            title: "Gagal!",
+            description: "Kategory forum tidak boleh kosong",
+          });
         }
         if (statusCode === 409) {
-          return toast.error("Nama Forum Sudah Ada");
+          return toast({
+            title: "Gagal!",
+            description: "Nama forum sudah ada!",
+          });
         }
         if (statusCode === 422) {
-          return toast.error("422");
+          return toast({
+            title: "Gagal!",
+            description: "Ada yang salah, coba lagi nanti!",
+          });
         }
       }
 
       endErrorToast();
     },
     onMutate: () => {
-      toast.loading("Mohon tunggu");
+      toast({
+        title: "Mohon tunggu...",
+        description: "Sedang Membuat Forum..",
+      });
     },
   });
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Icons } from "./Icon";
+import { Icons } from "./Icons";
 import { Button } from "@/components/ui/button";
 import { FC, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -27,7 +27,6 @@ const ButtonGoogle: FC<ButtonLogin> = ({ className, ...props }) => {
       });
     } finally {
       setIsLoading(false);
-      redirect("/laman");
     }
   };
 
@@ -40,7 +39,7 @@ const ButtonGoogle: FC<ButtonLogin> = ({ className, ...props }) => {
         size="sm"
         className="w-full"
       >
-        {isLoading ? null : <Icons.sun className="h-4 w-4 mr-2" />}
+        {isLoading ? null : <Icons.google className="h-4 w-4 mr-2" />}
         Google
       </Button>
     </div>

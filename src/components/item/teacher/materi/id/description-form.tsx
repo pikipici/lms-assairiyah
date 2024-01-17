@@ -148,7 +148,7 @@ export const DescriptionForm = ({
                 <FormItem>
                   <FormControl>
                     <Textarea
-                      disabled={isSubmitting}
+                      disabled={isLoading}
                       placeholder="Masukkan deskripsi"
                       {...field}
                     />
@@ -159,7 +159,7 @@ export const DescriptionForm = ({
             />
 
             <div className="flex items-center gap-x-2">
-              <Button type="submit" disabled={isSubmitting || !isValid}>
+              <Button type="submit" disabled={isLoading}>
                 Simpan
               </Button>
             </div>

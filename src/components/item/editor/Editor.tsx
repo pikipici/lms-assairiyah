@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import TextareaAutosize from "react-textarea-autosize";
 import { z } from "zod";
 
-import { toast } from "react-hot-toast";
+import { toast } from "@/hooks/use-toast";
 import { Uploader, uploadFiles } from "@/lib/uploadthing";
 import { PostCreationRequest, PostValidator } from "@/lib/validators/post";
 import { useMutation } from "@tanstack/react-query";
@@ -26,6 +26,14 @@ interface EditorProps {
 }
 
 export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
+  const [hasWindow, setHasWindow] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setHasWindow(true);
+    }
+  }, []);
+
   const { loginToast, endErrorToast } = useCustomToast();
   const {
     register,
@@ -62,29 +70,46 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
       if (error instanceof AxiosError) {
         const statusCode = error.response?.status;
         if (statusCode === 401) {
-          return toast.error("kamu belum login!") && redirect("/signin");
+          toast({
+            title: "Gagal !!",
+            description: "kamu belum login!",
+          });
+
+          return redirect("/signin");
         }
         if (statusCode === 405) {
-          return toast.error("Kamu bukan pembuat forum");
+          return toast({
+            title: "Gagal !!",
+            description: "Kamu bukan pembuat forum",
+          });
         }
         if (statusCode === 400) {
-          return toast.error("Kamu belum mengikuti forum");
+          return toast({
+            title: "Gagal !!",
+            description: "Kamu belum mengikuti forum",
+          });
         }
       }
 
       endErrorToast();
     },
     onMutate: () => {
-      toast.loading("Mohon tunggu");
+      toast({
+        title: "Loading...",
+        description: "Sedang membuat postingan",
+      });
     },
     onSuccess: () => {
       // turn pathname /r/mycommunity/submit into /r/mycommunity
       const newPathname = pathname.split("/").slice(0, -1).join("/");
-      router.push(newPathname);
+      router.back();
 
       router.refresh();
 
-      return toast.success("Post berhasil dibuat");
+      return toast({
+        title: "Sukses !",
+        description: "Post berhasil di posting",
+      });
     },
   });
 
@@ -229,7 +254,7 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
           </div>
         </form>
       </div>
-      <div className="w-full flex justify-end">
+      <div className="w-full flex justify-end mb-10">
         <Button
           className="w-fit"
           disabled={isLoading}

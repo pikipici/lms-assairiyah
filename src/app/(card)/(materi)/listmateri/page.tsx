@@ -17,13 +17,17 @@ import {
 import { db } from "@/lib/db";
 import Balancer from "react-wrap-balancer";
 import { INFINITE_SCROLLING_PAGINATION_BROWSE } from "@/config";
-import { getCourses } from "@/app/actions/get-courses";
+import {
+  CourseWithProgressWithMapel,
+  getCourses,
+} from "@/app/actions/get-courses";
 import { getAuthSession } from "@/lib/auth";
 import { formatUrl } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import id from "date-fns/locale/id";
 import moment from "moment";
 import "moment/locale/id";
+import { getProgress } from "@/app/actions/get-progress";
 
 moment.locale("id");
 // import { generateSEO } from '@/lib/generateSEO'
@@ -61,88 +65,38 @@ export default async function ListMateri({ searchParams }: SearchPageProps) {
     where: {
       isPublished: true,
     },
-    orderBy: [
-      {
-        createdAt: "desc",
-      },
-    ],
     include: {
       mapel: true,
       tingkat: true,
+      chapters: {
+        where: {
+          isPublished: true,
+        },
+        select: {
+          id: true,
+        },
+      },
     },
-    take: INFINITE_SCROLLING_PAGINATION_BROWSE,
-  });
-
-  const getUserCourse = await getCourses({
-    userId: studentId,
-    ...searchParams,
-  });
-
-  const mapel = await db.mapel.findMany({
     orderBy: {
-      name: "asc",
+      createdAt: "desc",
     },
   });
 
-  const tingkat = await db.tingkat.findMany({
-    orderBy: {
-      name: "desc",
-    },
-  });
+  const fixcourses: CourseWithProgressWithMapel[] = await Promise.all(
+    courses.map(async (course) => {
+      const progressPercentage = await getProgress(studentId, course.id);
 
-  // const formattedHref = `/materi/${formatUrl(
-  //   courses.
-  // )}`;
+      return {
+        ...course,
+        progress: progressPercentage,
+      };
+    })
+  );
 
   return (
     <FadeInStagger className="grid md:grid-cols-2 gap-5 p-5" faster>
       <AnimatePresence mode="wait">
-        {/* {filteredArticles.map((articles) => (
-          <FadeIn
-            layout
-            key={articles.title}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <Card className="h-max hover:shadow-lg hover:shadow-secondary">
-              <CardHeader className="p-5">
-                <CardTitle>
-                  <Link
-                    href={`/articles/${articles.slug.toLowerCase()}`}
-                    className="leading-normal"
-                  >
-                    {articles.title}
-                  </Link>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="py-0 px-5 text-sm text-muted-foreground line-clamp-4">
-                {articles.summary}
-              </CardContent>
-              <CardFooter className="p-5">
-                <div className="space-y-1">
-                  <p className="text-xs text-muted-foreground hidden md:block">
-                    {articles.publishedDate}
-                  </p>
-                  <div className="flex items-center gap-x-1">
-                    <p className="text-sm text-muted-foreground">Tags: </p>
-                    <Badge>{articles.tag}</Badge>
-                  </div>
-                </div>
-                <Button variant="outline" className="ml-auto" asChild>
-                  <Link
-                    href={`/articles/${articles.slug.toLowerCase()}`}
-                    className="leading-normal"
-                  >
-                    Read More
-                  </Link>
-                </Button>
-              </CardFooter>
-            </Card>
-          </FadeIn>
-        ))} */}
-        {courses.map((course) => (
+        {fixcourses.map((course) => (
           <FadeIn
             layout
             key={course.id}
@@ -169,9 +123,9 @@ export default async function ListMateri({ searchParams }: SearchPageProps) {
                 <div className="space-y-1">
                   <div className="flex items-center gap-x-1">
                     <p className="text-sm text-muted-foreground">
-                      Untuk Tingkat:{" "}
+                      Untuk Tingkat :{course.tingkat?.name}
                     </p>
-                    <Badge variant={"default"}>{course.tingkat?.name}</Badge>
+                    {/* <Badge variant={"default"}>{course.tingkat?.name}</Badge> */}
                   </div>
                   {/* <p className="text-sm font-bold text-muted-foreground hidden md:block">
                     {moment(course.createdAt).format("LL")}
@@ -188,7 +142,7 @@ export default async function ListMateri({ searchParams }: SearchPageProps) {
                     href={`/detailmateri/${formatUrl(course.name)}`}
                     className="leading-normal"
                   >
-                    Lihat
+                    {course.progress}
                   </Link>
                 </Button>
               </CardFooter>

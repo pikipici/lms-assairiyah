@@ -38,6 +38,21 @@ export const MateriColumns: ColumnDef<MateriColumn>[] = [
     },
   },
   {
+    header: "Pembahasan",
+    accessorKey: "chapter",
+    cell: ({ row }) => {
+      return (
+        <div className="font-medium">
+          {row.original.chapter ? (
+            <p>{row.original.chapter} Pembahasan</p>
+          ) : (
+            "Tidak ada pembahasan"
+          )}
+        </div>
+      );
+    },
+  },
+  {
     header: "Dibuat Pada",
     accessorKey: "createdAt",
     cell: ({ row }) => {

@@ -19,9 +19,7 @@ import { Label } from "@/components/ui/label";
 import ButtonGoogle from "@/components/ui/Custom-UI/Button-google";
 import { redirect } from "next/navigation";
 
-type FormType = "signin" | "signup";
-
-const Signin = ({ formType }: { formType: FormType }) => {
+const Signin = () => {
   const [userInput, setUserInput] = useState({
     username: "",
     password: "",
@@ -54,17 +52,14 @@ const Signin = ({ formType }: { formType: FormType }) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
-    if (formType === "signin" && userInput.username && userInput.password) {
-      const { username, password } = userInput;
-      const user = await signIn("credentials", {
-        username,
-        password,
-        // redirect: false,
-      });
-      // if (!user?.url) toast.error("Email or password is incorrect");
-      return redirect("/");
-    } else toast.error("Fill all details");
+    const { username, password } = userInput;
+    console.log(username, password);
+    const user = await signIn("credentials", {
+      username,
+      password,
+      // redirect: false,
+    });
+    // if (!user?.url) toast.error("Email or password is incorrect");
   };
   return (
     <div className="flex flex-col items-center justify-center gap-4">
@@ -74,7 +69,7 @@ const Signin = ({ formType }: { formType: FormType }) => {
           <CardDescription></CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
-          <form className="grid gap-4" onSubmit={(e) => handleSubmit(e)}>
+          {/* <form className="grid gap-4" onSubmit={(e) => handleSubmit(e)}>
             <div className="grid gap-2">
               <Label>Username</Label>
               <Input
@@ -108,15 +103,15 @@ const Signin = ({ formType }: { formType: FormType }) => {
             <Button type="submit" className="w-full">
               Login
             </Button>
-          </form>
+          </form> */}
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or continue with
+              <span className="bg-background px-2 font-bold">
+                Login dengan google
               </span>
             </div>
           </div>

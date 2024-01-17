@@ -117,19 +117,27 @@ const BoxForum = ({
             />
           ) : null}
 
-          <Link href={`/f/${setSlug}/submit`} prefetch={false} passHref>
-            <Button
-              isLoading={isLoading}
-              loadingText="Loading"
-              spinnerPlacement="start"
-              onClick={() => setIsLoading(true)}
-              colorScheme="teal"
-              width="fit-content"
-              height="30px"
-            >
-              Buat Postingan
-            </Button>
-          </Link>
+          {forum.Creator.id === sessionId ? (
+            <div className="mx-auto">
+              <Link
+                href={`/createpost/${setSlug}/submit`}
+                prefetch={false}
+                passHref
+              >
+                <Button
+                  isLoading={isLoading}
+                  loadingText="Loading"
+                  spinnerPlacement="start"
+                  onClick={() => setIsLoading(true)}
+                  colorScheme="teal"
+                  width="fit-content"
+                  height="30px"
+                >
+                  Buat Postingan
+                </Button>
+              </Link>
+            </div>
+          ) : null}
 
           {/* {user && (
                         <Link

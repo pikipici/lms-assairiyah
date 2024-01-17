@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Forum Madrasah",
-//   description: "testing",
+  //   description: "testing",
 };
 
 export default async function SetupLayout({

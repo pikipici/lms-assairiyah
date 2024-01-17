@@ -133,8 +133,8 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
                 <FormItem>
                   <FormControl>
                     <Input
-                      disabled={isSubmitting}
-                      placeholder="e.g. 'Advanced web development'"
+                      disabled={isLoading}
+                      placeholder="Input judul materi disini."
                       {...field}
                     />
                   </FormControl>
@@ -144,7 +144,7 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
             />
 
             <div className="flex items-center gap-x-2">
-              <Button type="submit" disabled={isSubmitting || !isValid}>
+              <Button type="submit" disabled={isLoading}>
                 Simpan
               </Button>
             </div>

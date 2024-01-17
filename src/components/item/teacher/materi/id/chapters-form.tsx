@@ -89,6 +89,7 @@ export const ChaptersForm = ({
         description: "Edit data berhasil.",
       });
       toggleCreating();
+      form.reset();
       router.refresh();
     },
     onMutate: () => {

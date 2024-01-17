@@ -65,7 +65,7 @@ const PostCard: FC<PostProps> = ({
                 <>
                   <a
                     className="underline text-zinc-900 text-sm underline-offset-2"
-                    href={`/r/${subredditName}}`}
+                    href={`/f/${subredditName}}`}
                   >
                     Forum {subredditName}
                   </a>
@@ -82,7 +82,7 @@ const PostCard: FC<PostProps> = ({
             </PostDropdown>
           </div>
 
-          <a href={`/r/${subredditName}/post/${post.id}`}>
+          <a href={`/post/${post.id}`}>
             <h1 className="text-lg font-semibold py-2 leading-6 text-gray-900">
               {post.title}
             </h1>
@@ -102,10 +102,7 @@ const PostCard: FC<PostProps> = ({
       </div>
 
       <div className="flex bg-gray-50 z-20 text-sm p-4 sm:px-6 space-x-4 justify-between">
-        <a
-          className="w-fit flex items-center gap-2"
-          href={`/r/${subredditName}/post/${post.id}`}
-        >
+        <a className="w-fit flex items-center gap-2" href={`/post/${post.id}`}>
           <MessageSquare className="h-4 w-4" /> {commentAmt} comments
         </a>
         <p className="w-fit flex items-center gap-2">

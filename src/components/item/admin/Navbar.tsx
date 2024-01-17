@@ -26,28 +26,53 @@ const Navbar = async () => {
   const navItems: navItemType[] = [
     {
       id: 1,
-      label: "Browse",
-      href: "/browse",
+      label: "Data Informasi Web",
+      href: "/admin",
     },
     {
       id: 2,
-      label: "Community",
-      href: "/community",
+      label: "Semua Postingan",
+      href: "/admin/post",
     },
     {
       id: 3,
-      label: "Watchlist",
-      href: "/watchlist",
+      label: "Daftar Forum",
+      href: "/admin/forum",
     },
     {
       id: 4,
-      label: "Leaderboard",
-      href: "/leaderboard",
+      label: "Daftar Polling",
+      href: "/admin/polling",
     },
     {
       id: 5,
-      label: "Poll",
-      href: "/poll",
+      label: "Daftar Pendidik",
+      href: "/admin/teacherlist",
+    },
+    {
+      id: 6,
+      label: "Daftar Murid",
+      href: "/admin/studentlist",
+    },
+    {
+      id: 8,
+      label: "Daftar Kelas",
+      href: "/admin/kelas",
+    },
+    {
+      id: 9,
+      label: "Daftar Kelas",
+      href: "/admin/kelas",
+    },
+    {
+      id: 10,
+      label: "Mata Pelajaran",
+      href: "/admin/mapel",
+    },
+    {
+      id: 11,
+      label: "Daftar Event Sekolah",
+      href: "/admin/events",
     },
   ];
 

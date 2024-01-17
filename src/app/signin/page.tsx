@@ -14,7 +14,7 @@ const Page = () => {
         />
         {/* <h1 className="-mt-8 text-3xl font-bold md:-mt-14">Login Page</h1> */}
       </div>
-      <Signin formType="signin" />
+      <Signin />
     </main>
   );
 };

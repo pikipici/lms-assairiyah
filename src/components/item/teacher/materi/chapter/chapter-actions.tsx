@@ -111,7 +111,7 @@ export const ChapterActions = ({
     <div className="flex items-center gap-x-2">
       <Button
         className="w-fit"
-        disabled={isLoading}
+        disabled={isLoading || disabled}
         size="sm"
         variant="outline"
         onClick={onClick}

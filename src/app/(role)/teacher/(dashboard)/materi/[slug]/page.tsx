@@ -61,8 +61,6 @@ const CoursePage = async ({ params }: { params: { slug: string } }) => {
     return <div>Course not found</div>;
   }
 
-  const formattedMapel = formatMapel(course.mapel!.name, true);
-
   const titleCourse = course.title;
 
   const requiredFields = [
@@ -120,7 +118,6 @@ const CoursePage = async ({ params }: { params: { slug: string } }) => {
                   <MapelForm
                     initialData={course}
                     courseId={course.id}
-                    mapelName={formattedMapel}
                     options={mapel.map((m) => ({
                       label: m.name,
                       value: m.id,
